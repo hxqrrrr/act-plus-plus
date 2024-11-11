@@ -1,0 +1,16 @@
+{
+    "task_name": "sim_insertion_human",
+    "ckpt_dir": "experiments/sim_transfer_cube/kl10_chunk100_lr1e-5",
+    "policy_class": "ACT",
+    "kl_weight": 10,
+    "chunk_size": 100,
+    "hidden_dim": 512,
+    "batch_size": 8,
+    "dim_feedforward": 3200,
+    "lr": 1e-5,
+    "seed": 0,
+    "num_steps": 1000000,
+    "eval": false,
+    "onscreen_render": false
+
+}
