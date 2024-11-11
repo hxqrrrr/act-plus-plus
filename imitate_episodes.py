@@ -145,7 +145,7 @@ def main(args):
     config_path = os.path.join(ckpt_dir, 'config.pkl')
     expr_name = ckpt_dir.split('/')[-1]
     if not is_eval:
-        wandb.init(project="mobile-aloha2", reinit=True, entity="mobile-aloha2", name=expr_name)
+        wandb.init(project="mobile-aloha2", reinit=True, entity="mobile-aloha2", name=expr_name, mode="disabled")
         wandb.config.update(config)
     with open(config_path, 'wb') as f:
         pickle.dump(config, f)
@@ -295,10 +295,11 @@ def eval_bc(config, ckpt_name, save_episode=True, num_rollouts=50):
 
     # load environment
     if real_robot:
-        from aloha_scripts.robot_utils import move_grippers # requires aloha
-        from aloha_scripts.real_env import make_real_env # requires aloha
-        env = make_real_env(init_node=True, setup_robots=True, setup_base=True)
-        env_max_reward = 0
+        # from aloha_scripts.robot_utils import move_grippers # requires aloha
+        # from aloha_scripts.real_env import make_real_env # requires aloha
+        # env = make_real_env(init_node=True, setup_robots=True, setup_base=True)
+        # env_max_reward = 0
+        pass
     else:
         from sim_env import make_sim_env
         env = make_sim_env(task_name)
@@ -478,21 +479,22 @@ def eval_bc(config, ckpt_name, save_episode=True, num_rollouts=50):
             print(f'Avg fps {max_timesteps / (time.time() - time0)}')
             plt.close()
         if real_robot:
-            move_grippers([env.puppet_bot_left, env.puppet_bot_right], [PUPPET_GRIPPER_JOINT_OPEN] * 2, move_time=0.5)  # open
-            # save qpos_history_raw
-            log_id = get_auto_index(ckpt_dir)
-            np.save(os.path.join(ckpt_dir, f'qpos_{log_id}.npy'), qpos_history_raw)
-            plt.figure(figsize=(10, 20))
-            # plot qpos_history_raw for each qpos dim using subplots
-            for i in range(state_dim):
-                plt.subplot(state_dim, 1, i+1)
-                plt.plot(qpos_history_raw[:, i])
-                # remove x axis
-                if i != state_dim - 1:
-                    plt.xticks([])
-            plt.tight_layout()
-            plt.savefig(os.path.join(ckpt_dir, f'qpos_{log_id}.png'))
-            plt.close()
+            # move_grippers([env.puppet_bot_left, env.puppet_bot_right], [PUPPET_GRIPPER_JOINT_OPEN] * 2, move_time=0.5)  # open
+            # # save qpos_history_raw
+            # log_id = get_auto_index(ckpt_dir)
+            # np.save(os.path.join(ckpt_dir, f'qpos_{log_id}.npy'), qpos_history_raw)
+            # plt.figure(figsize=(10, 20))
+            # # plot qpos_history_raw for each qpos dim using subplots
+            # for i in range(state_dim):
+            #     plt.subplot(state_dim, 1, i+1)
+            #     plt.plot(qpos_history_raw[:, i])
+            #     # remove x axis
+            #     if i != state_dim - 1:
+            #         plt.xticks([])
+            # plt.tight_layout()
+            # plt.savefig(os.path.join(ckpt_dir, f'qpos_{log_id}.png'))
+            # plt.close()
+            pass
 
 
         rewards = np.array(rewards)
